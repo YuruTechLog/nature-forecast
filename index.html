@@ -44,46 +44,78 @@
     border-bottom: 1px solid var(--border);
   }
 
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 1rem;
-    margin-bottom: 2.5rem;
-  }
-
-  .card {
+  /* グループボックス */
+  .group-box {
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 1.2rem;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+
+  .group-header {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1.1rem 1.3rem;
+    background: linear-gradient(90deg, #0c1a2e, #111827);
+    border-bottom: 1px solid var(--border);
     text-decoration: none;
     color: var(--text);
-    display: block;
-    transition: border-color 0.2s;
+    transition: background 0.2s;
   }
-  .card:hover { border-color: var(--accent); }
+  .group-header:hover { background: linear-gradient(90deg, #112240, #1a2744); }
 
-  .card-icon { font-size: 2rem; margin-bottom: 0.6rem; }
-  .card-name { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.3rem; }
-  .card-desc { font-size: 0.75rem; color: var(--sub); line-height: 1.5; }
+  .group-icon { font-size: 1.6rem; }
+  .group-info { flex: 1; }
+  .group-name {
+    font-size: 1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .group-desc { font-size: 0.75rem; color: var(--sub); margin-top: 0.25rem; line-height: 1.4; }
+  .group-arrow { color: var(--accent); font-size: 1rem; }
 
   .badge {
     display: inline-block;
-    font-size: 0.65rem;
+    font-size: 0.62rem;
     font-weight: 600;
-    padding: 0.15rem 0.5rem;
+    padding: 0.12rem 0.45rem;
     border-radius: 4px;
-    margin-bottom: 0.5rem;
   }
   .badge-live { background: #0f4c2a; color: #4ade80; }
-  .badge-soon { background: #2d2006; color: #fbbf24; }
 
-  /* hidden: 準備中カードは薄く表示 */
-  .card-hidden {
-    opacity: 0.4;
-    pointer-events: none;
-    cursor: default;
+  /* 地点リスト */
+  .spot-list {
+    display: flex;
+    flex-direction: column;
   }
+
+  .spot-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.3rem 0.75rem 1.5rem;
+    text-decoration: none;
+    color: var(--text);
+    border-top: 1px solid var(--border);
+    font-size: 0.85rem;
+    transition: background 0.15s;
+    gap: 0.6rem;
+  }
+  .spot-item:hover { background: #1a2236; }
+
+  .spot-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+  .spot-name { flex: 1; }
+  .spot-note { font-size: 0.72rem; color: var(--sub); }
+  .spot-chevron { color: var(--border); font-size: 0.8rem; }
 
   footer {
     text-align: center;
@@ -104,39 +136,44 @@
 <main>
   <div class="section-title">自然タイプから探す</div>
 
-  <div class="grid">
-
-    <!-- 公開中 -->
-    <a class="card" href="https://tidal-mirror-forecast.pages.dev/">
-      <div class="badge badge-live">予報中</div>
-      <div class="card-icon">🌊</div>
-      <div class="card-name">干潟・鏡張り</div>
-      <div class="card-desc">干潮 × 日没 × 風速の三重条件で「鏡張り見ごろ指数」を算出。父母ヶ浜・天神崎・かがみの海。</div>
+  <!-- 干潟・鏡張りグループ -->
+  <div class="group-box">
+    <a class="group-header" href="https://tidal-mirror-forecast.pages.dev/">
+      <div class="group-icon">🌊</div>
+      <div class="group-info">
+        <div class="group-name">
+          干潟・鏡張り
+          <span class="badge badge-live">予報中</span>
+        </div>
+        <div class="group-desc">干潮 × 日没 × 風速の三重条件で「鏡張り見ごろ指数」を算出</div>
+      </div>
+      <div class="group-arrow">→</div>
     </a>
-
-    <!-- 準備中（hidden） -->
-    <div class="card card-hidden" aria-hidden="true">
-      <div class="badge badge-soon">準備中</div>
-      <div class="card-icon">🌫</div>
-      <div class="card-name">雲海</div>
-      <div class="card-desc">気温・湿度・風速から雲海発生確率を予測。</div>
+    <div class="spot-list">
+      <a class="spot-item" href="https://tidal-mirror-forecast.pages.dev/chichibugahama/">
+        <span class="spot-dot"></span>
+        <span class="spot-name">父母ヶ浜</span>
+        <span class="spot-note">香川・三豊市 / 日本版ウユニ塩湖</span>
+        <span class="spot-chevron">›</span>
+      </a>
+      <a class="spot-item" href="https://tidal-mirror-forecast.pages.dev/kagami_no_umi/">
+        <span class="spot-dot"></span>
+        <span class="spot-name">かがみの海</span>
+        <span class="spot-note">佐賀・太良町</span>
+        <span class="spot-chevron">›</span>
+      </a>
+      <a class="spot-item" href="https://tidal-mirror-forecast.pages.dev/tenjinzaki/">
+        <span class="spot-dot"></span>
+        <span class="spot-name">天神崎</span>
+        <span class="spot-note">和歌山・田辺市</span>
+        <span class="spot-chevron">›</span>
+      </a>
     </div>
-
-    <div class="card card-hidden" aria-hidden="true">
-      <div class="badge badge-soon">準備中</div>
-      <div class="card-icon">🌅</div>
-      <div class="card-name">朝焼け・夕焼け</div>
-      <div class="card-desc">雲量・視程・太陽高度から焼け空指数を算出。</div>
-    </div>
-
-    <div class="card card-hidden" aria-hidden="true">
-      <div class="badge badge-soon">準備中</div>
-      <div class="card-icon">⭐</div>
-      <div class="card-name">星空</div>
-      <div class="card-desc">光害・雲量・月齢から星空観察指数を算出。</div>
-    </div>
-
   </div>
+
+  <!-- 準備中グループ（非公開） -->
+  <!-- 雲海 / 朝焼け夕焼け / 星空 — display:none で非公開。追加時はここを有効化 -->
+
 </main>
 
 <footer>
