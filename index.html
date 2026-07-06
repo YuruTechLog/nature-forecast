@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自然予報 | nature-forecast</title>
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --card: #111827;
+    --accent: #38bdf8;
+    --text: #e2e8f0;
+    --sub: #94a3b8;
+    --border: #1e293b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+    min-height: 100vh;
+  }
+  header {
+    background: linear-gradient(135deg, #0c1445, #1e3a5f);
+    padding: 2rem 1.5rem 1.5rem;
+    text-align: center;
+  }
+  header h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: 0.05em; }
+  header p { color: var(--sub); font-size: 0.82rem; margin-top: 0.4rem; }
+
+  main {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+
+  .section-title {
+    font-size: 0.72rem;
+    color: var(--sub);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem;
+    text-decoration: none;
+    color: var(--text);
+    display: block;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: var(--accent); }
+
+  .card-icon { font-size: 2rem; margin-bottom: 0.6rem; }
+  .card-name { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .card-desc { font-size: 0.75rem; color: var(--sub); line-height: 1.5; }
+
+  .badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+  }
+  .badge-live { background: #0f4c2a; color: #4ade80; }
+  .badge-soon { background: #2d2006; color: #fbbf24; }
+
+  /* hidden: 準備中カードは薄く表示 */
+  .card-hidden {
+    opacity: 0.4;
+    pointer-events: none;
+    cursor: default;
+  }
+
+  footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    font-size: 0.72rem;
+    color: var(--sub);
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌿 自然予報</h1>
+  <p>自然現象の「見ごろ」を数値で届ける実験サイト群</p>
+</header>
+
+<main>
+  <div class="section-title">自然タイプから探す</div>
+
+  <div class="grid">
+
+    <!-- 公開中 -->
+    <a class="card" href="https://tidal-mirror-forecast.pages.dev/">
+      <div class="badge badge-live">予報中</div>
+      <div class="card-icon">🌊</div>
+      <div class="card-name">干潟・鏡張り</div>
+      <div class="card-desc">干潮 × 日没 × 風速の三重条件で「鏡張り見ごろ指数」を算出。父母ヶ浜・天神崎・かがみの海。</div>
+    </a>
+
+    <!-- 準備中（hidden） -->
+    <div class="card card-hidden" aria-hidden="true">
+      <div class="badge badge-soon">準備中</div>
+      <div class="card-icon">🌫</div>
+      <div class="card-name">雲海</div>
+      <div class="card-desc">気温・湿度・風速から雲海発生確率を予測。</div>
+    </div>
+
+    <div class="card card-hidden" aria-hidden="true">
+      <div class="badge badge-soon">準備中</div>
+      <div class="card-icon">🌅</div>
+      <div class="card-name">朝焼け・夕焼け</div>
+      <div class="card-desc">雲量・視程・太陽高度から焼け空指数を算出。</div>
+    </div>
+
+    <div class="card card-hidden" aria-hidden="true">
+      <div class="badge badge-soon">準備中</div>
+      <div class="card-icon">⭐</div>
+      <div class="card-name">星空</div>
+      <div class="card-desc">光害・雲量・月齢から星空観察指数を算出。</div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <a href="https://note.com/yuru_tech_log" target="_blank" rel="noopener" style="color:#38bdf8;text-decoration:none;">ゆるてくログ</a> の実験サイト群
+</footer>
+
+</body>
+</html>
