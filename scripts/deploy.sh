@@ -1,5 +1,6 @@
 #!/bin/bash
-# deploy.sh — shared/ 配下を Cloudflare Pages (nature-forecast) へデプロイ
+# deploy.sh — リポジトリルートを Cloudflare Pages (nature-forecast) へデプロイ
+# shared/ tidal/ など全ディレクトリが公開対象
 # Usage: ./scripts/deploy.sh [--dry-run]
 set -euo pipefail
 
@@ -20,9 +21,9 @@ if [[ "${1:-}" == "--dry-run" ]]; then
 fi
 
 PROJECT="nature-forecast"
-DEPLOY_DIR="$REPO_ROOT/shared"
+DEPLOY_DIR="$REPO_ROOT"
 
-echo "[deploy] $PROJECT → shared/"
+echo "[deploy] $PROJECT → ."
 
 if [ -z "$DRY_RUN" ]; then
     CLOUDFLARE_API_TOKEN="$CLOUDFLARE_API_TOKEN" \
