@@ -9,10 +9,6 @@ window.DISCLAIMER_CONFIG = {
   // null or missing → gate mode (data fetch blocked until user acknowledges)
   tone: "soft",
 
-  // Your site info (shown in disclaimer banner)
-  siteName: "あなたのサイト名",
-  siteUrl: "https://example.com",
-
   // Function to call after disclaimer is accepted (your data fetch fn)
   // dataFetchFn: load,
 
