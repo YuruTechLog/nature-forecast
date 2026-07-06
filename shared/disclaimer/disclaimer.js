@@ -1,46 +1,54 @@
 /**
- * disclaimer-kit v1.0.0
+ * disclaimer-kit v1.1.0
  * License: MIT
  * https://github.com/YuruTechLog/nature-forecast
  *
  * Usage:
  *   1. Set window.DISCLAIMER_CONFIG before loading this script
- *   2. <script src="disclaimer.js"></script>
- *
- * // ES module future path (npm):
- * // export function initDisclaimer(config) { ... }
+ *   2. <script src="https://nature-forecast.pages.dev/shared/disclaimer/disclaimer.js"></script>
  */
 (function () {
   'use strict';
 
+  // tone = 語調のみ。免責の核心（参考値・予報業否定・損害不責任・現地確認）は全tone共通。
   const TONES = {
+    // soft: フッター向け。控えめ・丁寧。通常サイト向け。
     soft: {
-      label: '参考情報',
-      color: '#38bdf8',
-      icon: 'ℹ️',
       text: (cfg) =>
-        `${cfg.siteName} は参考情報サービスです。<br>掲載内容は気象・潮汐の数値計算結果をもとにした参考値であり、現地の状況と異なる場合があります。` +
-        (cfg.showWeatherLaw !== false ? '<br>気象業務法第17条に基づく気象予報業ではありません。' : '') +
-        '<br>本情報を利用した行動による損害について責任を負いません。',
+        `${cfg.siteName} が提供する情報は、気象・潮汐データの数値計算をもとにした参考値です。` +
+        `<br>現地の状況・気象条件は実際と異なる場合があります。必ずご自身で現地状況をご確認ください。` +
+        (cfg.showWeatherLaw !== false
+          ? '<br>本サービスは気象業務法第17条に基づく気象予報業ではありません。'
+          : '') +
+        `<br>本情報の利用により生じた損害について、運営者は責任を負いません。`,
     },
+    // strict: 法的明示が必要な場面。断定的・明確。
     strict: {
-      label: '免責事項',
-      color: '#fbbf24',
-      icon: '⚠️',
       text: (cfg) =>
-        `【免責事項】${cfg.siteName} の掲載情報は気象・潮汐の数値計算結果をもとに算出した参考値であり、正確性を保証しません。<br>` +
-        (cfg.showWeatherLaw !== false ? '気象業務法第17条に基づく気象予報業ではありません。<br>' : '') +
-        '自然環境・気象条件は急変します。現地の状況・安全を必ずご自身で確認してください。<br>' +
-        '本情報の利用により生じた損害について、運営者は一切の責任を負いません。',
+        `【免責事項】${cfg.siteName} の掲載情報は気象・潮汐データの数値計算による参考値であり、正確性・完全性を保証しません。` +
+        (cfg.showWeatherLaw !== false
+          ? '<br>本サービスは気象業務法第17条に基づく気象予報業ではありません。'
+          : '') +
+        `<br>自然環境・気象条件は急変します。現地の状況・安全は必ずご自身でご確認ください。` +
+        `<br>本情報の利用により生じた一切の損害について、運営者は責任を負いません。`,
     },
+    // warn: 危険度の高い自然環境向け。強い警告。
     warn: {
-      label: '警告',
-      color: '#ef4444',
-      icon: '🚨',
       text: (cfg) =>
-        `【重要】${cfg.siteName} の情報は数値計算結果をもとにした参考値です。<br>荒天・強風時は現地への訪問を中止してください。<br>` +
-        '気象・潮位は急変します。本情報による行動に起因するいかなる損害についても責任を負いません。',
+        `【重要】${cfg.siteName} の情報は気象・潮汐データの数値計算による参考値です。正確性を保証しません。` +
+        (cfg.showWeatherLaw !== false
+          ? '<br>本サービスは気象業務法第17条に基づく気象予報業ではありません。'
+          : '') +
+        `<br>荒天・強風・高潮時は現地への訪問を中止してください。気象・潮位は急変します。` +
+        `<br>本情報による行動に起因するいかなる損害についても、運営者は一切の責任を負いません。`,
     },
+  };
+
+  // toneごとのバッジ色（ラベル・アイコンは共通）
+  const TONE_COLOR = {
+    soft:   '#64748b',
+    strict: '#94a3b8',
+    warn:   '#fbbf24',
   };
 
   const GATE_HTML = `
@@ -53,7 +61,6 @@
         background:#111827;border:1px solid #374151;border-radius:16px;
         padding:2rem 1.8rem;max-width:480px;width:90%;text-align:center;
       ">
-        <div style="font-size:2rem;margin-bottom:0.8rem;">⛔</div>
         <div style="color:#ef4444;font-size:1rem;font-weight:700;margin-bottom:0.8rem;">
           設定が必要です
         </div>
@@ -69,7 +76,6 @@
       </div>
     </div>`;
 
-  // Default inline styles (used when bannerClass is not set)
   const DEFAULT_BANNER_STYLE = [
     'background:#111827',
     'border:1px solid #374151',
@@ -84,6 +90,7 @@
 
   function buildBanner(cfg) {
     const tone = TONES[cfg.tone];
+    const color = TONE_COLOR[cfg.tone];
     const text = tone.text(cfg);
     const useClass = cfg.bannerClass || '';
     const styleAttr = useClass ? '' : ` style="${DEFAULT_BANNER_STYLE}"`;
@@ -91,11 +98,10 @@
     return `
       <div id="dkit-banner"${useClass ? ` class="${useClass}"` : ''}${styleAttr}>
         <span style="
-          display:inline-block;background:${tone.color}22;
-          color:${tone.color};font-size:0.7rem;font-weight:700;
-          padding:0.15rem 0.5rem;border-radius:4px;
+          display:inline-block;
+          color:${color};font-size:0.7rem;font-weight:700;
           margin-bottom:0.4rem;letter-spacing:0.05em;
-        ">${tone.icon} ${tone.label}</span>
+        ">免責事項</span>
         <div style="color:#94a3b8;font-size:0.74rem;line-height:1.7;">
           ${text}
         </div>
@@ -112,7 +118,6 @@
     const banner = div.firstElementChild;
 
     if (footer) {
-      // Remove static disclaimer text if present
       const staticDisclaimer = footer.querySelector('.disclaimer');
       if (staticDisclaimer) staticDisclaimer.remove();
       footer.insertBefore(banner, footer.firstChild);
@@ -132,7 +137,7 @@
 
     if (!cfg || !cfg.tone || !TONES[cfg.tone]) {
       showGate();
-      return; // data fetch blocked
+      return;
     }
 
     insertBanner(cfg);
