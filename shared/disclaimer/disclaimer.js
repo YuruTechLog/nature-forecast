@@ -1,5 +1,5 @@
 /**
- * disclaimer-kit v1.1.0
+ * disclaimer-kit v1.1.1
  * License: MIT
  * https://github.com/YuruTechLog/nature-forecast
  *
