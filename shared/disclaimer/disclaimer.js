@@ -44,12 +44,7 @@
     },
   };
 
-  // toneごとのバッジ色（ラベル・アイコンは共通）
-  const TONE_COLOR = {
-    soft:   '#64748b',
-    strict: '#94a3b8',
-    warn:   '#fbbf24',
-  };
+  const LABEL_COLOR = '#64748b';
 
   const GATE_HTML = `
     <div id="dkit-gate" style="
@@ -90,7 +85,6 @@
 
   function buildBanner(cfg) {
     const tone = TONES[cfg.tone];
-    const color = TONE_COLOR[cfg.tone];
     const text = tone.text(cfg);
     const useClass = cfg.bannerClass || '';
     const styleAttr = useClass ? '' : ` style="${DEFAULT_BANNER_STYLE}"`;
@@ -99,7 +93,7 @@
       <div id="dkit-banner"${useClass ? ` class="${useClass}"` : ''}${styleAttr}>
         <span style="
           display:inline-block;
-          color:${color};font-size:0.7rem;font-weight:700;
+          color:${LABEL_COLOR};font-size:0.7rem;font-weight:700;
           margin-bottom:0.4rem;letter-spacing:0.05em;
         ">免責事項</span>
         <div style="color:#94a3b8;font-size:0.74rem;line-height:1.7;">
