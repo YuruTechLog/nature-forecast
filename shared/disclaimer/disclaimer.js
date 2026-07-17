@@ -1,51 +1,55 @@
 /**
- * disclaimer-kit v1.1.1
+ * disclaimer-kit v2.0.0
  * License: MIT
  * https://github.com/YuruTechLog/nature-forecast
  *
  * Usage:
  *   1. Set window.DISCLAIMER_CONFIG before loading this script
  *   2. <script src="https://nature-forecast.pages.dev/shared/disclaimer/disclaimer.js"></script>
+ *
+ * Config:
+ *   tone   - page writing style: "polite" | "terse" | "formal"
+ *   domain - data type: "tidal" | "weather"
+ *   showWeatherLaw - boolean (default: true)
+ *   dataFetchFn    - function to call after banner is inserted
+ *   bannerClass    - optional CSS class (removes inline styles)
  */
 (function () {
   'use strict';
 
-  // tone = 語調のみ。免責の核心（参考値・予報業否定・損害不責任・現地確認）は全tone共通。
+  const DOMAINS = {
+    tidal:   '気象・潮汐データの数値計算をもとにした参考値',
+    weather: '気象データの数値計算をもとにした参考値',
+  };
+
+  // tone = 掲載先ページの文体。免責の核心は全tone共通。
   const TONES = {
-    // soft: フッター向け。控えめ・丁寧。通常サイト向け。
-    soft: {
-      text: (cfg) =>
-        `本サイトが提供する情報は、気象・潮汐データの数値計算をもとにした参考値です。` +
+    // polite: です・ます調
+    polite: {
+      build: (dataDesc, showLaw) =>
+        `本サイトが提供する情報は、${dataDesc}です。` +
         `<br>現地の状況・気象条件は実際と異なる場合があります。` +
         `<br>必ずご自身で現地状況をご確認ください。` +
-        (cfg.showWeatherLaw !== false
-          ? '<br>本サービスは気象業務法第17条に基づく気象予報業ではありません。'
-          : '') +
+        (showLaw ? '<br>本サービスは気象業務法第17条に基づく気象予報業ではありません。' : '') +
         `<br>本情報の利用により生じた損害について、運営者は責任を負いません。`,
     },
-    // strict: 法的明示が必要な場面。断定的・明確。
-    strict: {
-      text: (cfg) =>
-        `【免責事項】本サイトの掲載情報は気象・潮汐データの数値計算による参考値です。` +
+    // terse: 体言止め
+    terse: {
+      build: (dataDesc, showLaw) =>
+        `${dataDesc}。現地状況と異なる場合あり。` +
+        `<br>現地確認は自己責任。` +
+        (showLaw ? '<br>気象業務法第17条に基づく気象予報業に非ず。' : '') +
+        `<br>損害責任は負わない。`,
+    },
+    // formal: 文語・法的明示
+    formal: {
+      build: (dataDesc, showLaw) =>
+        `【免責事項】本サイトの掲載情報は${dataDesc}です。` +
         `<br>正確性・完全性を保証しません。` +
-        (cfg.showWeatherLaw !== false
-          ? '<br>本サービスは気象業務法第17条に基づく気象予報業ではありません。'
-          : '') +
+        (showLaw ? '<br>本サービスは気象業務法第17条に基づく気象予報業ではありません。' : '') +
         `<br>自然環境・気象条件は急変します。` +
         `<br>現地の状況・安全は必ずご自身でご確認ください。` +
         `<br>本情報の利用により生じた一切の損害について、運営者は責任を負いません。`,
-    },
-    // warn: 危険度の高い自然環境向け。強い警告。
-    warn: {
-      text: (cfg) =>
-        `【重要】本サイトの情報は気象・潮汐データの数値計算による参考値です。` +
-        `<br>正確性を保証しません。` +
-        (cfg.showWeatherLaw !== false
-          ? '<br>本サービスは気象業務法第17条に基づく気象予報業ではありません。'
-          : '') +
-        `<br>荒天・強風・高潮時は現地への訪問を中止してください。` +
-        `<br>気象・潮位は急変します。` +
-        `<br>本情報による行動に起因するいかなる損害についても、運営者は一切の責任を負いません。`,
     },
   };
 
@@ -65,7 +69,7 @@
           設定が必要です
         </div>
         <div style="color:#94a3b8;font-size:0.82rem;line-height:1.8;margin-bottom:1.2rem;">
-          <code>DISCLAIMER_CONFIG.tone</code> が未設定です。<br>
+          <code>DISCLAIMER_CONFIG.tone</code> または <code>domain</code> が未設定です。<br>
           <code>config.js</code> を設置してから再度アクセスしてください。
         </div>
         <div style="color:#64748b;font-size:0.72rem;">
@@ -89,8 +93,9 @@
   ].join(';');
 
   function buildBanner(cfg) {
-    const tone = TONES[cfg.tone];
-    const text = tone.text(cfg);
+    const dataDesc = DOMAINS[cfg.domain];
+    const showLaw = cfg.showWeatherLaw !== false;
+    const text = TONES[cfg.tone].build(dataDesc, showLaw);
     const useClass = cfg.bannerClass || '';
     const styleAttr = useClass ? '' : ` style="${DEFAULT_BANNER_STYLE}"`;
 
@@ -134,7 +139,7 @@
   function init() {
     const cfg = window.DISCLAIMER_CONFIG;
 
-    if (!cfg || !cfg.tone || !TONES[cfg.tone]) {
+    if (!cfg || !TONES[cfg.tone] || !DOMAINS[cfg.domain]) {
       showGate();
       return;
     }
