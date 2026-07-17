@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>桧原湖 山岳リフレクション指数</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg: '#0a0e1a', card: '#111827', accent: '#38bdf8', sub: '#94a3b8', border: '#1e293b',
+        }
+      }
+    }
+  }
+</script>
+<style>
+  /* forecast_mountain.js が生成する要素用スタイル */
+  .forecast-table-wrap { overflow-x: auto; }
+  .forecast-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  .forecast-table th, .forecast-table td { border: 1px solid #1e293b; padding: 0.5rem 0.6rem; text-align: center; }
+  .forecast-table thead th { background: #0c1a2e; color: #94a3b8; font-size: 0.72rem; letter-spacing: 0.05em; }
+  .date-col { width: 60px; }
+  .date-cell { white-space: nowrap; }
+  .date-main { display: block; font-size: 0.9rem; font-weight: 700; color: #e2e8f0; }
+  .date-sub { display: block; font-size: 0.7rem; color: #94a3b8; }
+  .today-badge { display: inline-block; font-size: 0.6rem; background: #1d4ed8; color: #93c5fd; padding: 0.1rem 0.4rem; border-radius: 3px; margin-left: 3px; }
+  .today-row { background: #0f172a; }
+  .score-cell { vertical-align: top; min-width: 120px; }
+  .score-top { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; justify-content: center; }
+  .score-label { font-size: 1.1rem; font-weight: 700; }
+  .score-pts { font-size: 0.68rem; color: #94a3b8; }
+  .s2 { color: #22c55e; }
+  .s1 { color: #38bdf8; }
+  .s0 { color: #e2e8f0; }
+  .sm { color: #f59e0b; }
+  .sx { color: #6b7280; }
+  .scenic-badge { font-size: 0.75rem; color: #94a3b8; }
+  .windows-block { margin-top: 4px; font-size: 0.7rem; color: #94a3b8; }
+  .window-none { font-size: 0.68rem; color: #64748b; }
+  .cell-meta { margin-top: 3px; font-size: 0.65rem; color: #64748b; }
+  .loc-emoji { display: block; font-size: 1.4rem; }
+  .loc-name { display: block; font-size: 0.75rem; font-weight: 700; color: #e2e8f0; }
+  .loc-updated { display: block; font-size: 0.62rem; color: #64748b; margin-top: 2px; }
+  .loc-map-link { color: #38bdf8; text-decoration: none; }
+  .no-data { color: #4b5563; }
+  .legend { background: #111827; border: 1px solid #1e293b; border-radius: 8px; padding: 1rem 1.2rem; margin-top: 1.5rem; font-size: 0.75rem; }
+  .legend-title { font-weight: 700; color: #94a3b8; margin-bottom: 0.6rem; font-size: 0.72rem; letter-spacing: 0.05em; }
+  .legend-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.3rem 1rem; }
+  .legend-item { color: #94a3b8; }
+  .legend-sep { border: none; border-top: 1px solid #1e293b; margin: 0.7rem 0; }
+  .error-section { color: #ef4444; text-align: center; padding: 3rem 0; }
+  .location-list { display: flex; flex-direction: column; gap: 0.75rem; }
+  .location-card { background: #111827; border: 1px solid #1e293b; border-radius: 8px; padding: 0.8rem 1rem; display: flex; align-items: flex-start; gap: 1rem; }
+  .location-card.today-row { border-color: #1d4ed8; }
+</style>
+</head>
+<body class="bg-[#0a0e1a] text-slate-200 min-h-screen font-sans">
+
+<header class="bg-gradient-to-br from-[#0c1445] to-[#1e3a5f] py-8 px-6 text-center border-b border-[#1e3a5f]">
+  <a href="/mirror/mountain/" class="text-sky-400 text-xs block mb-2">← 山岳リフレクション指数トップ</a>
+  <h1 class="text-2xl font-bold tracking-wide">🏔 桧原湖 山岳リフレクション指数</h1>
+  <p class="text-slate-400 text-sm mt-1">無風 × 日の出 × 低雲量の三重条件で算出する参考指数</p>
+  <p class="mt-1 text-xs text-slate-400">福島県耶麻郡北塩原村。逆さ磐梯山。湖面の静穏性が高く秋〜春に好条件多い。</p>
+  <p class="mt-2 text-xs text-slate-400">
+    <a href="https://note.com/yuru_tech_log" target="_blank" rel="noopener" class="text-sky-400 no-underline">ゆるてくログ</a> の実験サイト
+  </p>
+</header>
+
+<div class="updated bg-[#1e3a5f] text-amber-400 text-xs font-semibold py-1.5 px-4 text-center" id="updated-bar">データ読み込み中...</div>
+
+<main id="main" class="max-w-4xl mx-auto px-4 py-6">
+  <p class="text-center text-slate-400 py-12">読み込み中...</p>
+</main>
+
+<footer class="text-center py-8 px-4 text-slate-400 text-xs leading-loose border-t border-[#1e293b]">
+  Weather data by <a href="https://open-meteo.com/" target="_blank" class="text-sky-400 no-underline">Open-Meteo.com</a> (CC BY 4.0)<br>
+  掲載内容は参考情報。気象業務法第17条に基づく気象予報業ではありません。&nbsp;|&nbsp; © ゆるてく
+</footer>
+
+<script src="https://tidal-mirror-forecast.pages.dev/shared/forecast_mountain.js"></script>
+<script>
+loadLocation('mountain_hibarako');
+</script>
+</body>
+</html>

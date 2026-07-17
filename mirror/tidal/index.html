@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>鏡張り指数</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg: '#0a0e1a',
+          card: '#111827',
+          accent: '#38bdf8',
+          sub: '#94a3b8',
+          border: '#1e293b',
+        }
+      }
+    }
+  }
+</script>
+</head>
+<body class="bg-[#0a0e1a] text-slate-200 min-h-screen font-sans">
+
+<header class="bg-gradient-to-br from-[#0c1445] to-[#1e3a5f] py-8 px-6 text-center border-b border-[#1e3a5f]">
+  <a href="/" class="text-sky-400 text-xs">← 自然予報トップ</a>
+  <h1 class="text-2xl font-bold tracking-wide">🌊 鏡張り指数</h1>
+  <p class="text-slate-400 text-sm mt-1">干潮 × 日没 × 風速の三重条件で算出する参考指数</p>
+  <p class="mt-2 text-xs text-slate-400">
+    <a href="https://note.com/yuru_tech_log" target="_blank" rel="noopener" class="text-sky-400 no-underline">ゆるてくログ</a> の実験サイト
+  </p>
+</header>
+
+<div class="updated bg-[#1e3a5f] text-amber-400 text-xs font-semibold py-1.5 px-4 text-center" id="updated-bar">データ読み込み中...</div>
+
+<main id="main" class="max-w-4xl mx-auto px-4 py-6">
+  <p class="text-center text-slate-400 py-12">読み込み中...</p>
+</main>
+
+<footer class="text-center py-8 px-4 text-slate-400 text-xs leading-loose border-t border-[#1e293b]">
+  <div class="disclaimer bg-[#111827] border border-[#374151] rounded-lg px-4 py-3 text-xs text-slate-400 max-w-lg mx-auto mb-4 text-center">
+    本サイトは <a href="https://note.com/yuru_tech_log" target="_blank" rel="noopener" class="text-sky-400 no-underline">ゆるてくログ</a> の実験サイトです。<br>
+    掲載内容は参考情報であり、現地の状況と異なる場合があります。<br>
+    気象業務法第17条に基づく気象予報業ではありません。<br>
+    本指数を利用した行動による損害について一切の責任を負いません。<br>（◎の日ほど混みます。人が多すぎる日は知りません。）
+  </div>
+  Weather data by <a href="https://open-meteo.com/" target="_blank" class="text-sky-400 no-underline">Open-Meteo.com</a> (CC BY 4.0)<br>
+  潮汐データ: 気象庁 / 海しる（海上保安庁） &nbsp;|&nbsp; © ゆるてく
+</footer>
+
+<script src="https://tidal-mirror-forecast.pages.dev/shared/forecast.js"></script>
+<script src="https://nature-forecast.pages.dev/tidal/disclaimer.config.js"></script>
+<script>
+window.DISCLAIMER_CONFIG.dataFetchFn = load;
+</script>
+<script src="https://nature-forecast.pages.dev/shared/disclaimer/disclaimer.js"></script>
+</body>
+</html>
