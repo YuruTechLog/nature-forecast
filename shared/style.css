@@ -1,0 +1,334 @@
+:root {
+  --bg: #0a0e1a;
+  --card: #111827;
+  --accent: #38bdf8;
+  --text: #e2e8f0;
+  --sub: #94a3b8;
+  --warn: #fbbf24;
+  --border: #1e293b;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+  min-height: 100vh;
+}
+header {
+  background: linear-gradient(135deg, #0c1445, #1e3a5f);
+  padding: 1.8rem 1.5rem 1.2rem;
+  text-align: center;
+  border-bottom: 1px solid #1e3a5f;
+}
+header h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: 0.05em; }
+header p { color: var(--sub); font-size: 0.82rem; margin-top: 0.3rem; }
+.updated {
+  background: #1e3a5f;
+  color: var(--warn);
+  font-size: 0.78rem;
+  padding: 0.35rem 1rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+main {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 2rem;
+}
+
+/* ===== 週間予報テーブル ===== */
+.forecast-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.forecast-table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+}
+
+/* ヘッダ行 */
+.forecast-table thead tr {
+  background: #0d1a2e;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.forecast-table thead th {
+  padding: 0.85rem 0.6rem 0.7rem;
+  text-align: center;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--accent);
+  border-bottom: 2px solid var(--border);
+  white-space: nowrap;
+}
+.forecast-table thead th.date-col {
+  color: var(--sub);
+  width: 82px;
+  min-width: 82px;
+  text-align: left;
+  padding-left: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.loc-emoji {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 0.15rem;
+}
+.loc-name {
+  display: block;
+  font-size: 0.82rem;
+}
+.loc-updated {
+  display: block;
+  font-size: 0.65rem;
+  color: var(--sub);
+  margin-top: 0.2rem;
+  font-weight: normal;
+}
+
+/* データ行 */
+.forecast-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.forecast-table tbody tr:last-child {
+  border-bottom: none;
+}
+.forecast-table tbody tr:hover {
+  background: #111827;
+}
+.forecast-table tbody tr.today-row {
+  background: #0d1f35;
+}
+.forecast-table tbody tr.today-row:hover {
+  background: #112340;
+}
+
+/* 日付セル */
+.forecast-table td.date-cell {
+  padding: 0.75rem 0.5rem 0.75rem 1rem;
+  white-space: nowrap;
+  vertical-align: middle;
+  border-right: 1px solid var(--border);
+}
+.date-main {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text);
+  display: block;
+}
+.date-sub {
+  font-size: 0.7rem;
+  color: var(--sub);
+  display: block;
+  margin-top: 0.1rem;
+}
+.today-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: #0a0e1a;
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 0.05rem 0.35rem;
+  border-radius: 3px;
+  margin-top: 0.3rem;
+}
+
+/* スコアセル */
+.forecast-table td.score-cell {
+  padding: 0.65rem 0.5rem;
+  text-align: center;
+  vertical-align: middle;
+  border-right: 1px solid var(--border);
+  min-width: 150px;
+}
+.forecast-table td.score-cell:last-child {
+  border-right: none;
+}
+
+/* スコア上部: ラベル + 点数 横並び */
+.score-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.3rem;
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+.score-label {
+  font-size: 1.8rem;
+  font-weight: 900;
+  line-height: 1;
+}
+.score-label.s2 { color: #22c55e; }
+.score-label.s1 { color: #38bdf8; }
+.score-label.s0 { color: #a3e635; }
+.score-label.sm { color: var(--warn); }
+.score-label.sx { color: #ef4444; }
+
+.score-pts {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--sub);
+}
+
+/* 見ごろ時間帯 */
+.windows-block {
+  margin: 0.25rem 0 0.3rem;
+}
+.window-row {
+  font-size: 0.72rem;
+  line-height: 1.6;
+  color: var(--text);
+  white-space: nowrap;
+}
+.window-label {
+  font-size: 0.62rem;
+  color: var(--sub);
+  font-weight: 600;
+  margin-right: 0.2rem;
+}
+.window-none {
+  font-size: 0.68rem;
+  color: var(--sub);
+  opacity: 0.6;
+}
+
+/* 絶景モードバッジ */
+.scenic-badge {
+  display: inline-block;
+  font-size: 0.85rem;
+  margin-left: 0.25rem;
+  vertical-align: middle;
+  letter-spacing: 0;
+}
+
+/* 気象メタ情報 */
+.cell-meta {
+  font-size: 0.67rem;
+  color: var(--sub);
+  line-height: 1.65;
+  margin-top: 0.2rem;
+}
+
+.no-data {
+  color: var(--sub);
+  font-size: 0.78rem;
+  opacity: 0.5;
+}
+
+/* エラー */
+.error-section {
+  background: #1a0a0a;
+  border: 1px solid #7f1d1d;
+  border-radius: 12px;
+  color: var(--sub);
+  text-align: center;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ===== 凡例 ===== */
+.legend {
+  max-width: 700px;
+  margin: 1.5rem auto 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+}
+.legend-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 0.7rem;
+  letter-spacing: 0.05em;
+}
+.legend-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.5rem 1.2rem;
+}
+.legend-item {
+  font-size: 0.72rem;
+  color: var(--sub);
+  line-height: 1.5;
+}
+.legend-item strong {
+  color: var(--text);
+}
+.legend-sep {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 0.7rem 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--sub);
+  font-size: 0.74rem;
+  line-height: 1.9;
+  border-top: 1px solid var(--border);
+}
+footer a { color: var(--accent); text-decoration: none; }
+.loc-map-link {
+  color: var(--accent);
+  text-decoration: none;
+}
+.loc-map-link:hover {
+  text-decoration: underline;
+  opacity: 0.85;
+}
+.disclaimer {
+  background: var(--card);
+  border: 1px solid #374151;
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  font-size: 0.75rem;
+  color: var(--sub);
+  margin: 0 auto 1rem;
+  max-width: 520px;
+  text-align: center;
+}
+
+/* ===== 地点単体ページ（縦リスト） ===== */
+.location-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.location-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.9rem 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.location-card.today-row {
+  background: #0d1f35;
+  border-color: #1e3a5f;
+}
+.location-card .date-cell {
+  flex: 0 0 72px;
+  border-right: 1px solid var(--border);
+  padding-right: 1rem;
+}
+.location-card .score-cell {
+  flex: 1;
+  text-align: left;
+  min-width: 0;
+}
+.location-card .score-top {
+  justify-content: flex-start;
+}
