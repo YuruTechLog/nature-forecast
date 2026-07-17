@@ -243,6 +243,10 @@ function renderLocationList(loc) {
   }
   const today = todayStr();
 
+  const mapLink = (loc.lat && loc.lon)
+    ? `<div class="loc-map-link-wrap"><a href="https://maps.google.com/maps?q=${loc.lat},${loc.lon}" target="_blank" rel="noopener" class="loc-map-link">📍 Googleマップで開く</a></div>`
+    : '';
+
   const rows = loc.forecasts.map(entry => {
     const isToday = entry.date === today;
     const { main, sub } = formatDate(entry.date);
@@ -259,7 +263,7 @@ function renderLocationList(loc) {
     </div>`;
   }).join('');
 
-  return `<div class="location-list">${rows}</div>${renderLegend(false)}`;
+  return `${mapLink}<div class="location-list">${rows}</div>${renderLegend(false)}`;
 }
 
 async function load() {

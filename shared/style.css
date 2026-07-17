@@ -280,6 +280,11 @@ footer {
   border-top: 1px solid var(--border);
 }
 footer a { color: var(--accent); text-decoration: none; }
+.loc-map-link-wrap {
+  text-align: center;
+  padding: 0.5rem 0 0.25rem;
+  font-size: 0.8rem;
+}
 .loc-map-link {
   color: var(--accent);
   text-decoration: none;
