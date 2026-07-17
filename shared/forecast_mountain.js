@@ -47,7 +47,7 @@ function renderScoreCell(entry) {
   if (entry.sunrise_time) metaLines.push(`🌄 ${entry.sunrise_time}`);
   if (entry.wind_ms != null) metaLines.push(`💨 ${entry.wind_ms}m/s`);
   if (entry.cloud_cover_low != null) metaLines.push(`☁️ ${entry.cloud_cover_low}%`);
-  if (entry.visibility_km != null) metaLines.push(`👁 ${entry.visibility_km}km`);
+  if (entry.visibility_km != null) metaLines.push(`🔭 ${entry.visibility_km}km`);
 
   return `<td class="score-cell">
     <div class="score-top">
@@ -73,7 +73,7 @@ function renderScoreCellInner(entry) {
   if (entry.sunrise_time) metaLines.push(`🌄 ${entry.sunrise_time}`);
   if (entry.wind_ms != null) metaLines.push(`💨 ${entry.wind_ms}m/s`);
   if (entry.cloud_cover_low != null) metaLines.push(`☁️ ${entry.cloud_cover_low}%`);
-  if (entry.visibility_km != null) metaLines.push(`👁 ${entry.visibility_km}km`);
+  if (entry.visibility_km != null) metaLines.push(`🔭 ${entry.visibility_km}km`);
 
   return `<div class="score-cell">
     <div class="score-top">
@@ -109,7 +109,7 @@ function renderLegend(showLocations = true) {
       <div class="legend-item">🌄　日の出時刻</div>
       <div class="legend-item">💨　風速（m/s）</div>
       <div class="legend-item">☁️　低層雲（%）</div>
-      <div class="legend-item">👁　視程（km）</div>
+      <div class="legend-item">🔭　視程（km）</div>
     </div>
     <hr class="legend-sep">
     <div class="legend-grid">
